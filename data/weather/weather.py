@@ -14,7 +14,7 @@ obj_json = {
     'Humidity': ''
 }
 
-#3 seasons
+#4 seasons
 general_json = {
     'January':[
     ],
