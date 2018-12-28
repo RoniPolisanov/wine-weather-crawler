@@ -2,6 +2,6 @@
 
 ```javascript
 (function(){
-	console.log("Roni, Haim, Reut");
+	console.log("Roni, Haim");
     };
 );
