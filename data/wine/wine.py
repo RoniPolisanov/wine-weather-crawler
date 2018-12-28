@@ -5,7 +5,7 @@ import requests
 
 wine_urls = []
 wine_category = {}
-wine_pages = [5820, 2952, 324, 168, 420, 36, 60]
+wine_pages = [5820, 2952, 324, 168, 0, 0, 432]
 new_wine = []
 data = []
 dd = []
@@ -27,7 +27,8 @@ print(wine_urls)
 
 # For loop to swipe between categories
 j = 0
-for wine in wine_urls[0:1]:              # Now Limited only for first category
+# 0:1 1:2 2:3 3:4 4:5 5:6 6:7
+for wine in wine_urls[0:7]:              # Now Limited only for first category
     wine = wine.replace('/0/list', '')
     wine_category[j] = []
     i = 0
@@ -62,7 +63,7 @@ for wine in wine_urls[0:1]:              # Now Limited only for first category
 
         # Processing request
         response = requests.get(wine, params=body, headers=headers)
-        print(f"Downaload from page: {response.url}")
+        #print(f"Downaload from page: {response.url}")
 
         # new_wine = urlopen(pageURL).read()
         new_wine = response.content
@@ -111,7 +112,6 @@ for wine in wine_urls[0:1]:              # Now Limited only for first category
             row = dict(zip(dt, dd))
 
             # print(row)
-            print("*")
 
             del dt[:]
             del dd[:]
@@ -126,7 +126,7 @@ for wine in wine_urls[0:1]:              # Now Limited only for first category
     j += 1
     print(wine_category)
 
-    with open('data.json', 'w') as fp:
-        json.dump(wine_category, fp)
-        
+with open('data.json', 'w') as fp:
+    json.dump(wine_category, fp)
+
 print('DATA1 Wine, Completed.')
