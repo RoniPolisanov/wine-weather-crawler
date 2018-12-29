@@ -3,37 +3,35 @@ from urllib.request import urlopen
 import json
 import requests
 
-wine_urls = []
-wine_category = {}
-wine_pages = [5820, 2952, 324, 168, 0, 0, 432]
-new_wine = []
+wineUrls = []
+wineCategory = {}
+newWine = []
 data = []
 dd = []
 dt = []
+goodResponse = True
 
 # Getting the wine categories list
-wine_list = urlopen("http://www.lcbo.com/content/lcbo/en/catalog/wine.html")
-wine_list_soup = BeautifulSoup(wine_list.read(), 'html.parser')
-wine_list_div = wine_list_soup.find("div", {"class": "nav"})
-wine_list_div_li = wine_list_div.findAll("li", {})
+wineList = urlopen("http://www.lcbo.com/content/lcbo/en/catalog/wine.html")
+wineListSoup = BeautifulSoup(wineList.read(), 'html.parser')
+wineListDiv = wineListSoup.find("div", {"class": "nav"})
+wineListDivLi = wineListDiv.findAll("li", {})
 
 # Parsing each wine category link
-for wine in wine_list_div_li[0:7]:
-    wine_urls.append('http://www.lcbo.com' + str(wine.a['href']))
+for wine in wineListDivLi[0:7]:
+    wineUrls.append('http://www.lcbo.com' + str(wine.a['href']))
 
-print(wine_category)
-print(wine_pages)
-print(wine_urls)
+print(wineUrls)
 
 # For loop to swipe between categories
-j = 0
-# 0:1 1:2 2:3 3:4 4:5 5:6 6:7
-for wine in wine_urls[0:7]:              # Now Limited only for first category
-    wine = wine.replace('/0/list', '')
-    wine_category[j] = []
+for wine in wineUrls[0:5]:
     i = 0
+    j = 0
+    wine = wine.replace('/0/list', '')
+    wineCategory[j] = []
+
     # For loop to swipe between pages
-    while i <= wine_pages[j]:
+    while goodResponse:
         # Cast int to string
         iStr = str(i)
         # Body parameters
@@ -58,23 +56,31 @@ for wine in wine_urls[0:7]:              # Now Limited only for first category
         }
         # contains a characteristic string that allows the network protocol peers to identify the application type, operating system, software vendor or software version of the requesting software user agent
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+            'User-Agent': 'Chrome/50.0.2661.102'
         }
 
         # Processing request
-        response = requests.get(wine, params=body, headers=headers)
-        #print(f"Downaload from page: {response.url}")
+        try:
+            response = requests.get(wine, params=body, headers=headers)
+            print(response)
 
-        # new_wine = urlopen(pageURL).read()
-        new_wine = response.content
-        #  print(new_wine)
-        wineSoup = BeautifulSoup(new_wine, 'html.parser')
+        # Catch Bad response
+        except requests.exceptions.RequestException as e:
+            # Continue with next category
+            j += 1
+            print(e)
+            goodResponse = False
 
-       # print("PAGE NUMBER:" + iStr)
+        print(f"Downaload from page: {response.url}")
+
+        # newWine = urlopen(pageURL).read()
+        newWine = response.content
+
+        #  print(newWine)
+        wineSoup = BeautifulSoup(newWine, 'html.parser')
 
         # Getting all the wines of current page
         wineDiv = wineSoup.findAll("div", {"class": "product-image"})
-        #print(wineDiv)
 
         # Parsing the data of each wine
         for linkToPages in wineDiv:
@@ -111,22 +117,21 @@ for wine in wine_urls[0:7]:              # Now Limited only for first category
             # Merge 2 lists into one dictionary
             row = dict(zip(dt, dd))
 
-            # print(row)
-
             del dt[:]
             del dd[:]
 
-            wine_category[j].append(row.copy())
+            wineCategory[j].append(row.copy())
             row.clear()
 
         # Next page
         i += 12
+        with open('data.json', 'w') as fp:
+            json.dump(wineCategory, fp)
 
-    # Number of pages for each wine category
+    # Next category in JSON
     j += 1
-    print(wine_category)
-
-with open('data.json', 'w') as fp:
-    json.dump(wine_category, fp)
+    print(wineCategory)
 
 print('DATA1 Wine, Completed.')
+
+
