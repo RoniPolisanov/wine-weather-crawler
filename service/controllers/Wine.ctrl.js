@@ -11,11 +11,23 @@ fs = require('fs');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-Wine('WhiteWine');
+
 
 router.get('/', (req, res) => {
+    
     var obj = JSON.parse(fs.readFileSync("../data/data2.json", 'utf8'));
-    console.log(obj["0"][1]);
+    obj[4].forEach( wine => {
+        const newWine = new Wine(wine);
+        newWine.save(err => {
+            if (err){
+                console.log(err);
+                return res.status(400).send({ "Message": "There was a problem creating the project, please try again" });
+            }
+        })
+    })
+    console.log("Done");
+    res.status(200).send(`DONE`);
+
 });
 
 // Wine2.Schema('RedWine');

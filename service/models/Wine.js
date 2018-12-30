@@ -5,13 +5,16 @@ var mongoose = require("mongoose"),
         "WineName": String,
         "Price": String,
         "Alcohol/Vol": String,
-        "Made in:": String,
-        "Sugar Content": String,
+        "MadeIn:": String,
+        "SugarContent": String,
         "AvgTemperature": Number,
         "AvgHumidity": Number
     },
+    {collection: "SparklingWine"}
   );
 
-  module.exports = SchemaName => {
-    mongoose.model("WineSchema", WineSchema, SchemaName);
-  }
+//   module.exports = SchemaName => {
+//     mongoose.model("WineSchema", WineSchema, SchemaName);
+//   }
+
+module.exports = mongoose.model("WineSchema", WineSchema);
