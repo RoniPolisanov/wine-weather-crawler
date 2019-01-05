@@ -1,0 +1,23 @@
+{
+  "name": "wineweathercrawler",
+  "version": "1.0.0",
+  "description": "```javascript\r (function(){\r \tconsole.log(\"Roni, Haim\");\r     };\r );",
+  "main": "index.js",
+  "dependencies": {
+    "fs": "^0.0.1-security"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoniPolisanov/wine-weather-crawler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RoniPolisanov/wine-weather-crawler/issues"
+  },
+  "homepage": "https://github.com/RoniPolisanov/wine-weather-crawler#readme"
+}
