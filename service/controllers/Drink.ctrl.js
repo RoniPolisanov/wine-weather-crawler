@@ -43,32 +43,23 @@ router.post('/initialSystem', (req, res) => {
 router.get('/getDrinksPerCountry', (req, res) => {
     let obj = {};
     let arr = [];
-    function username(col){
-        console.log('Start');
-        return new Promise(function(resolve,reject) {
-            // Get the distinct list of MadeIn countries
-        var Wine2 = mongoose.model("DrinkSchema", Drink.DrinkSchema, col);
-        Wine2.distinct('MadeIn', (err, docs) => {
-            if (err){
-                console.log(err);
-                return res.status(500).send({"Message": "Internal server error"});
-            } 
-            
-            // Create object with country name and number of drinks for each country
-            docs.forEach( (doc) => {
-                
-                console.log(doc.length);
-                if (obj[`${doc}`])
-                    obj[`${doc}`] += doc.length;
-                    else
-                    obj[`${doc}`] = doc.length;
-                })
+    // Crossing the count of wines with the countries
+    function featchData(col){
+        return new Promise(function(resolve, reject) {
+            var Wine2 = mongoose.model("DrinkSchema", Drink.DrinkSchema, col);
+            var agg = [{$group: {_id: "$MadeIn", total: {$sum: 1}}}];
+            Wine2.aggregate(agg, function(err, docs){
+                if (err){
+                    console.log(err);
+                    return res.status(500).send({"Message": "Internal server error"});
+                }
+                docs.forEach((doc) => obj[`${doc._id}`] = doc.total);            
                 resolve(obj);
-            }); 
+            });
         })
     }
 
-    username(process.env.Drink).then(function(data){
+    featchData(process.env.Drink).then(function(data){
         arr.push(data);
         // console.log(data);
         res.status(200).send(arr);
