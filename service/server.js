@@ -1,11 +1,9 @@
 const express               = require('express'),      
       app                   = express(),      
-      wineCtrl              = require('./controllers/Wine.ctrl'),
-      wineWithoutSugarCtrl  = require('./controllers/WineWithoutSugar.ctrl'),
+      wineCtrl              = require('./controllers/Drink.ctrl'),
       port                  = process.env.PORT || 3000;
       
-app.use('/wine', wineCtrl);
-//app.use('/wine2', wineWithoutSugarCtrl);
+app.use('/api', wineCtrl);
 
 //  refers root to API file
 app.use('/', express.static('./public')); 
