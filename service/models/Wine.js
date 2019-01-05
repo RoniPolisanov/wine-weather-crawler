@@ -9,12 +9,16 @@ var mongoose = require("mongoose"),
         "SugarContent": String,
         "AvgTemperature": Number,
         "AvgHumidity": Number
-    },
-    {collection: "SparklingWine"}
+    }
   );
 
-//   module.exports = SchemaName => {
-//     mongoose.model("WineSchema", WineSchema, SchemaName);
+  // 1st param - name <String> model name
+  // 2nd param - [schema] <Schema> schema name
+  // 3rd param - [collection] <String> collection name (optional, induced from model name)
+  // 4th param - [skipInit] <Boolean> whether to skip initialization (defaults to false)
+
+// module.exports = CollectionName => {
+//     mongoose.model("WineSchema", WineSchema, CollectionName);
 //   }
 
-module.exports = mongoose.model("WineSchema", WineSchema);
+// module.exports = mongoose.model("WineSchema", WineSchema);
