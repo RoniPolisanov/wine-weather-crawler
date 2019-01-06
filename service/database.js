@@ -1,8 +1,9 @@
 require('dotenv').config();
 var mongoose = require('mongoose');
+let MLAB_KEY = process.env.MLAB_KEY;
 
 // Connect to database with auto-reonnect enabled
-mongoose.connect(process.env.MLAB_KEY, {autoReconnect: true, useNewUrlParser: true});
+mongoose.connect(MLAB_KEY, {autoReconnect: true, useNewUrlParser: true});
 
 // When successfully connected
 mongoose.connection.on('connected', () => {

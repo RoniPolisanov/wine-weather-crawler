@@ -1,11 +1,12 @@
-const express    = require('express'),      
-      app        = express(),      
-      wineCtrl   = require('./controllers/Drink.ctrl'),
-      port       = process.env.PORT || 3000,
-      cors       = require('cors'),
-      server     = app.listen(port, () => {console.log(`Listening on port ${port}`);}),
-      io         = require('socket.io')(server, {origins:'shenkar.html5-book.co.il:* http://shenkar.html5-book.co.il:* http://localhost:* localhost:*'});
-      
+require('dotenv').config();
+var port        = process.env.PORT || 3000,
+    express     = require('express'),
+    app         = express();
+    wineCtrl    = require('./controllers/Drink.ctrl'),
+    cors        = require('cors'),
+    server      = app.listen(port, () => {console.log(`Listening on port ${port}`);}),
+    io          = require('socket.io')(server, {origins:'shenkar.html5-book.co.il:* http://shenkar.html5-book.co.il:* http://localhost:* localhost:*'});
+
 app.use('/api', wineCtrl);
 
 //  refers root to API file
@@ -28,3 +29,4 @@ app.all('*', (req, res, next) => {
   res.status(404).send({ "Message": `This page was not found` });
 });
 
+module.exports = app;
