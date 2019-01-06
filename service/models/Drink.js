@@ -4,9 +4,9 @@ DrinkSchema = new mongoose.Schema(
         id: mongoose.Schema.Types.ObjectId,
         "WineName": String,
         "Price": String,
-        "Alcohol/Vol": String,
+        "Alcohol/Vol": Number,
         "MadeIn": String,
-        "SugarContent": String,
+        "SugarContent": Number,
         "AvgTemperature": Number,
         "AvgHumidity": Number
     }
